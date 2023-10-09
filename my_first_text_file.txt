@@ -1,1 +1,59 @@
-Hello World
+import math as m
+import random as r
+
+class BankAccount:
+    def __init__(self, name,userID, accountType, balance=0):
+        self.name = name
+        self.accountType = accountType
+        self.balance = balance
+        self.record = open(f"{self.accountType}_{self.name}.txt", "w")
+        self.status = ""  # Initialize status variable
+        self.__USERID = userID
+    def deposit(self, amount):
+        self.record.write(f"You have deposited: {amount}\n")
+        self.balance += amount
+        self.status = "Deposited"
+
+    def withdraw(self, amount):
+        self.record.write(f"You have withdrawn: {amount}\n")
+        if amount <= self.balance:
+            self.balance -= amount
+            self.status = "Withdrawn"
+        else:
+            print("Insufficient Funds")
+
+    def get_acc_balance(self):
+        self.record.write(f"Your account balance is now: {self.balance}\n------------------------------------------------------------")
+        return f"Your account balance is now: {self.balance}"
+    def account(self, status):
+        self.record.write("-------------------------------------------------------------\n")
+        accDict = {"Name": self.name,"User ID":self.__USERID, "Account Type": self.accountType, "Amount": self.balance}
+        for key, value in accDict.items():
+            self.record.write(f"{key}: {value}\n")
+        if self.status == "Deposited":
+            self.record.write(f"Deposited: {self.balance}\n")
+        elif self.status == "Withdrawn":
+            self.record.write(f"Withdrawn: {self.balance}\n")
+        else:
+            return
+
+    def close_account(self):
+        self.record.close()
+
+def main():
+
+    account1 = BankAccount("John Doe",1500,"Savings", 1000)
+    account1.account("")
+    account1.deposit(700)
+    account1.withdraw(50)
+    print(account1.get_acc_balance())
+    account1.close_account()
+
+    account2 = BankAccount("Jane Jones",1600,"Chequing",2000)
+    account2.account("")
+    account2.deposit(200)
+    account2.withdraw(50)
+    print(account2.get_acc_balance())
+    account2.close_account()
+
+main()
